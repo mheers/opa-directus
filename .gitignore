@@ -1,0 +1,8 @@
+__debug_bin*
+opa-directus
+*.png
+.env
+database
+uploads
+extensions
+bundle/parameters/data.json
