@@ -65,6 +65,10 @@ func GetAnnotations(filepath string) ([]*ast.Annotations, error) {
 }
 
 func GetCustomSchemata(filepath string) ([]models.ObjectSchema, error) {
+	return GetCustomSchemataByName(filepath, "schema")
+}
+
+func GetCustomSchemataByName(filepath, schemaName string) ([]models.ObjectSchema, error) {
 	schemata := []models.ObjectSchema{}
 	annotations, err := GetAnnotations(filepath)
 	if err != nil {
@@ -73,8 +77,8 @@ func GetCustomSchemata(filepath string) ([]models.ObjectSchema, error) {
 
 	for _, annotation := range annotations {
 		// Check if the annotation is of type "schema"
-		if annotation.Custom["schema"] != nil {
-			schema, ok := annotation.Custom["schema"].(map[string]interface{})
+		if annotation.Custom[schemaName] != nil {
+			schema, ok := annotation.Custom[schemaName].(map[string]interface{})
 			if !ok {
 				return nil, fmt.Errorf("invalid schema type")
 			}
