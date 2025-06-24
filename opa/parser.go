@@ -38,7 +38,7 @@ func GetAnnotations(filepath string) ([]*ast.Annotations, error) {
 	if err != nil {
 		return nil, err
 	}
-	statements, comments, err := ParseStatementsWithOpts(filepath, string(content), ast.ParserOptions{
+	statements, _, err := ParseStatementsWithOpts(filepath, string(content), ast.ParserOptions{
 		ProcessAnnotation: true,
 		SkipRules:         false,
 		AllFutureKeywords: true,
@@ -46,9 +46,6 @@ func GetAnnotations(filepath string) ([]*ast.Annotations, error) {
 	})
 	if err != nil {
 		return nil, err
-	}
-	for _, comment := range comments {
-		fmt.Println(string(comment.Text))
 	}
 
 	annotations := []*ast.Annotations{}
@@ -59,7 +56,6 @@ func GetAnnotations(filepath string) ([]*ast.Annotations, error) {
 			annotations = append(annotations, a)
 		}
 	}
-	fmt.Println(annotations)
 
 	return annotations, nil
 }
@@ -98,12 +94,5 @@ func GetCustomSchemataByName(filepath, schemaName string) ([]models.ObjectSchema
 		}
 	}
 
-	// Print the schemata
-	for _, schema := range schemata {
-		fmt.Printf("Schema: %v\n", schema)
-		for propName, prop := range schema.Properties {
-			fmt.Printf("  Property: %s, Type: %s\n", propName, prop.Type)
-		}
-	}
 	return schemata, nil
 }
